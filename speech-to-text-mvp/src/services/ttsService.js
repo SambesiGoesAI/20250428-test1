@@ -21,7 +21,7 @@ class TTSService {
    * @param {string} model - Deepgram Aura voice model (default: aura-asteria-en)
    * @returns {Promise<void>} Resolves when audio finishes playing
    */
-  async speak(text, model = 'aura-asteria-en') {
+  async speak(text, model = 'aura-2-thalia-en') {
     if (!this.apiKey) {
       throw new Error('API key not set.');
     }
