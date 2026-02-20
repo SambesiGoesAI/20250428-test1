@@ -1,4 +1,26 @@
 .App {
   width: 100%;
   min-height: 100vh;
+  position: relative;
+}
+
+.language-toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s;
+}
+
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.28);
 }
