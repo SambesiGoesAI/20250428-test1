@@ -50,8 +50,7 @@ jobs:
             echo "VITE_DEEPGRAM_API_KEY is set (length: ${#VITE_DEEPGRAM_API_KEY})"
           fi
           if [ -z "$VITE_GROQ_API_KEY" ]; then
-            echo "ERROR: VITE_GROQ_API_KEY secret is not set!"
-            exit 1
+            echo "WARNING: VITE_GROQ_API_KEY is not set — chat feature will be disabled"
           else
             echo "VITE_GROQ_API_KEY is set (length: ${#VITE_GROQ_API_KEY})"
           fi
