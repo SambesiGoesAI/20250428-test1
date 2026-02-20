@@ -5,10 +5,22 @@
  * This helps identify which voices are available in your plan tier
  */
 
-const https = require('https');
-require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
+import https from 'https';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const ELEVENLABS_API_KEY = process.env.VITE_ELEVENLABS_API_KEY;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Parse .env manually (no dotenv dependency needed)
+let ELEVENLABS_API_KEY = process.env.VITE_ELEVENLABS_API_KEY;
+try {
+  const envContent = readFileSync(join(__dirname, '../.env'), 'utf8');
+  const match = envContent.match(/VITE_ELEVENLABS_API_KEY=(.+)/);
+  if (match) ELEVENLABS_API_KEY = match[1].trim();
+} catch {
+  // .env not found, fall back to environment variable
+}
 
 if (!ELEVENLABS_API_KEY) {
   console.error('❌ Error: VITE_ELEVENLABS_API_KEY not found in .env file');
