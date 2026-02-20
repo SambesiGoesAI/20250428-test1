@@ -71,10 +71,11 @@ class TTSService {
   /**
    * Speak using Google Cloud TTS (Finnish)
    * Available voices:
-   * - fi-FI-Standard-A (Female, standard quality)
-   * - fi-FI-Wavenet-A (Female, high quality, more natural)
+   * - fi-FI-Standard-A (Female, standard quality - robotic)
+   * - fi-FI-Wavenet-A (Female, high quality - more natural)
+   * - fi-FI-Neural2-A (Female, BEST quality - most natural, premium)
    */
-  async speakGoogleTTS(text, voiceName = 'fi-FI-Wavenet-A') {
+  async speakGoogleTTS(text, voiceName = 'fi-FI-Neural2-A') {
     if (!this.googleKey) {
       throw new Error('Google TTS API key not set.');
     }
