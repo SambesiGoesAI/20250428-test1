@@ -135,15 +135,15 @@ class TTSService {
 
   /**
    * Speak using ElevenLabs TTS (Multilingual - supports Finnish)
-   * Using "Charlotte" voice (multilingual v2 model)
+   * Using "Maya" voice (multilingual v2 model)
    */
   async speakElevenLabs(text, language = 'fi') {
     if (!this.elevenlabsKey) {
       throw new Error('ElevenLabs API key not set.');
     }
 
-    // Charlotte - excellent multilingual voice
-    const voiceId = 'XB0fDUnXU5powFXDhCwa';
+    // Maya - warm and engaging multilingual voice
+    const voiceId = 'MiueK1FXuZTCItgbQwPu';
 
     const response = await fetch(`${ELEVENLABS_TTS_URL}/${voiceId}`, {
       method: 'POST',
