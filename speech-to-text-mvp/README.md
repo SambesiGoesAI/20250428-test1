@@ -1,6 +1,10 @@
 # Speech-to-Text MVP
 
+[![Deploy to GitHub Pages](https://github.com/SambesiGoesAI/20250428-test1/actions/workflows/deploy-speech-to-text.yml/badge.svg)](https://github.com/SambesiGoesAI/20250428-test1/actions/workflows/deploy-speech-to-text.yml)
+
 A modular, production-ready React + Vite speech-to-text application with Deepgram API integration. This MVP features a clean architecture with reusable components that can be easily integrated into other React applications.
+
+**🌐 Live Demo:** https://SambesiGoesAI.github.io/20250428-test1/
 
 ## Features
 
