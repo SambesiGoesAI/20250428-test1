@@ -1,0 +1,59 @@
+{
+  "name": "@yourusername/stt-module",
+  "version": "1.0.0",
+  "description": "Clean, reusable TypeScript module for Speech-to-Text functionality with Deepgram API",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && tsc --module esnext --outDir dist-esm && mv dist-esm/index.js dist/index.mjs",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "clean": "rm -rf dist dist-esm",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "speech-to-text",
+    "stt",
+    "transcription",
+    "deepgram",
+    "audio",
+    "recording",
+    "react",
+    "typescript",
+    "voice",
+    "recognition"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/stt-module.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/stt-module/issues"
+  },
+  "homepage": "https://github.com/yourusername/stt-module#readme",
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0 || ^19.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
