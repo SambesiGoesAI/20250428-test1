@@ -7,3 +7,4 @@ export default defineConfig({
   // GitHub Pages uses /{repo-name}/ URL structure
   base: '/20250428-test1/',
 })
+// Trigger deployment with Finnish TTS support
