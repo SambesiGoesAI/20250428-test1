@@ -26,10 +26,10 @@ class TTSService {
    * Speak the given text using the appropriate TTS provider based on language
    * @param {string} text - Text to speak
    * @param {string} language - Language code ('en-US' or 'fi')
-   * @param {string} voiceQuality - For Finnish: 'neural2' or 'wavenet' (default: 'neural2')
+   * @param {string} voiceQuality - For Finnish: 'wavenet' or 'standard' (default: 'wavenet')
    * @returns {Promise<void>} Resolves when audio finishes playing
    */
-  async speak(text, language = 'en-US', voiceQuality = 'neural2') {
+  async speak(text, language = 'en-US', voiceQuality = 'wavenet') {
     if (!text) return;
 
     // Stop any currently playing audio
@@ -39,7 +39,7 @@ class TTSService {
     if (language === 'fi') {
       const voiceName = voiceQuality === 'wavenet'
         ? 'fi-FI-Wavenet-A'
-        : 'fi-FI-Neural2-A';
+        : 'fi-FI-Standard-A';
       return this.speakGoogleTTS(text, voiceName);
     } else {
       return this.speakDeepgram(text);
@@ -76,10 +76,9 @@ class TTSService {
    * Speak using Google Cloud TTS (Finnish)
    * Available voices:
    * - fi-FI-Standard-A (Female, standard quality - robotic)
-   * - fi-FI-Wavenet-A (Female, high quality - more natural)
-   * - fi-FI-Neural2-A (Female, BEST quality - most natural, premium)
+   * - fi-FI-Wavenet-A (Female, BEST quality available - more natural)
    */
-  async speakGoogleTTS(text, voiceName = 'fi-FI-Neural2-A') {
+  async speakGoogleTTS(text, voiceName = 'fi-FI-Wavenet-A') {
     if (!this.googleKey) {
       throw new Error('Google TTS API key not set.');
     }

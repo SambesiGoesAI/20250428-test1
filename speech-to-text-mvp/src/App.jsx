@@ -7,7 +7,7 @@ import './App.css'
 
 function App() {
   const [language, setLanguage] = useState('en-US');
-  const [voiceQuality, setVoiceQuality] = useState('neural2'); // 'neural2' or 'wavenet'
+  const [voiceQuality, setVoiceQuality] = useState('wavenet'); // 'wavenet' or 'standard'
   const [chatHistory, setChatHistory] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
 
@@ -48,10 +48,10 @@ function App() {
         {language === 'fi' && (
           <button
             className="voice-quality-toggle"
-            onClick={() => setVoiceQuality(voiceQuality === 'neural2' ? 'wavenet' : 'neural2')}
-            title={voiceQuality === 'neural2' ? 'Using Neural2 (Best Quality)' : 'Using WaveNet (Good Quality)'}
+            onClick={() => setVoiceQuality(voiceQuality === 'wavenet' ? 'standard' : 'wavenet')}
+            title={voiceQuality === 'wavenet' ? 'Using WaveNet (Best Quality)' : 'Using Standard (Basic Quality)'}
           >
-            {voiceQuality === 'neural2' ? '⭐ Neural2' : '✓ WaveNet'}
+            {voiceQuality === 'wavenet' ? '⭐ WaveNet' : '✓ Standard'}
           </button>
         )}
       </div>
