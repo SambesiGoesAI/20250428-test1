@@ -11,11 +11,18 @@
   box-sizing: border-box;
 }
 
-.language-toggle {
+.controls-panel {
   position: fixed;
   top: 1.25rem;
   right: 1.25rem;
   z-index: 100;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.language-toggle,
+.voice-quality-toggle {
   background: rgba(255, 255, 255, 0.15);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -28,8 +35,26 @@
   transition: background 0.2s;
 }
 
-.language-toggle:hover {
+.language-toggle:hover,
+.voice-quality-toggle:hover {
   background: rgba(255, 255, 255, 0.28);
+}
+
+.voice-quality-toggle {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .chat-section {

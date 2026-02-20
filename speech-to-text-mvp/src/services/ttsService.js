@@ -26,9 +26,10 @@ class TTSService {
    * Speak the given text using the appropriate TTS provider based on language
    * @param {string} text - Text to speak
    * @param {string} language - Language code ('en-US' or 'fi')
+   * @param {string} voiceQuality - For Finnish: 'neural2' or 'wavenet' (default: 'neural2')
    * @returns {Promise<void>} Resolves when audio finishes playing
    */
-  async speak(text, language = 'en-US') {
+  async speak(text, language = 'en-US', voiceQuality = 'neural2') {
     if (!text) return;
 
     // Stop any currently playing audio
@@ -36,7 +37,10 @@ class TTSService {
 
     // Choose provider based on language
     if (language === 'fi') {
-      return this.speakGoogleTTS(text);
+      const voiceName = voiceQuality === 'wavenet'
+        ? 'fi-FI-Wavenet-A'
+        : 'fi-FI-Neural2-A';
+      return this.speakGoogleTTS(text, voiceName);
     } else {
       return this.speakDeepgram(text);
     }
@@ -94,7 +98,7 @@ class TTSService {
         },
         audioConfig: {
           audioEncoding: 'MP3',
-          speakingRate: 0.95, // Slightly slower for clearer pronunciation
+          speakingRate: 1.14, // 20% faster for more dynamic speech
           pitch: 0.0
         }
       })

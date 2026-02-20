@@ -7,8 +7,9 @@ import './ChatDisplay.css';
  * @param {Array} messages - [{role: 'user'|'assistant', content: string}]
  * @param {boolean} isThinking - Whether the LLM is currently generating a response
  * @param {string} language - Current language setting ('en-US' or 'fi')
+ * @param {string} voiceQuality - Voice quality for Finnish TTS ('neural2' or 'wavenet')
  */
-const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US' }) => {
+const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US', voiceQuality = 'neural2' }) => {
   const bottomRef = useRef(null);
   const [playingIndex, setPlayingIndex] = useState(null);
 
@@ -26,7 +27,7 @@ const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US' }) 
 
     try {
       setPlayingIndex(index);
-      await ttsService.speak(text, language);
+      await ttsService.speak(text, language, voiceQuality);
       setPlayingIndex(null);
     } catch (err) {
       console.error('TTS error:', err);
