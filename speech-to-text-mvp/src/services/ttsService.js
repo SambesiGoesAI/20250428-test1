@@ -2,15 +2,18 @@
  * Text-to-Speech service supporting multiple providers:
  * - Deepgram Aura for English
  * - Google Cloud TTS for Finnish
+ * - ElevenLabs for multilingual (high quality)
  */
 
 const DEEPGRAM_TTS_URL = 'https://api.deepgram.com/v1/speak';
 const GOOGLE_TTS_URL = 'https://texttospeech.googleapis.com/v1/text:synthesize';
+const ELEVENLABS_TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech';
 
 class TTSService {
-  constructor(deepgramKey, googleKey) {
+  constructor(deepgramKey, googleKey, elevenlabsKey) {
     this.deepgramKey = deepgramKey;
     this.googleKey = googleKey;
+    this.elevenlabsKey = elevenlabsKey;
     this.currentAudio = null;
   }
 
@@ -22,25 +25,34 @@ class TTSService {
     this.googleKey = apiKey;
   }
 
+  setElevenlabsKey(apiKey) {
+    this.elevenlabsKey = apiKey;
+  }
+
   /**
-   * Speak the given text using the appropriate TTS provider based on language
+   * Speak the given text using the appropriate TTS provider
    * @param {string} text - Text to speak
    * @param {string} language - Language code ('en-US' or 'fi')
-   * @param {string} voiceQuality - For Finnish: 'wavenet' or 'standard' (default: 'wavenet')
+   * @param {string} voiceQuality - For Google TTS Finnish: 'wavenet' or 'standard' (default: 'wavenet')
+   * @param {string} provider - TTS provider: 'google' or 'elevenlabs' (default: 'google' for Finnish)
    * @returns {Promise<void>} Resolves when audio finishes playing
    */
-  async speak(text, language = 'en-US', voiceQuality = 'wavenet') {
+  async speak(text, language = 'en-US', voiceQuality = 'wavenet', provider = 'google') {
     if (!text) return;
 
     // Stop any currently playing audio
     this.stop();
 
-    // Choose provider based on language
+    // Choose provider based on language and preference
     if (language === 'fi') {
-      const voiceName = voiceQuality === 'wavenet'
-        ? 'fi-FI-Wavenet-A'
-        : 'fi-FI-Standard-A';
-      return this.speakGoogleTTS(text, voiceName);
+      if (provider === 'elevenlabs') {
+        return this.speakElevenLabs(text, language);
+      } else {
+        const voiceName = voiceQuality === 'wavenet'
+          ? 'fi-FI-Wavenet-A'
+          : 'fi-FI-Standard-A';
+        return this.speakGoogleTTS(text, voiceName);
+      }
     } else {
       return this.speakDeepgram(text);
     }
@@ -122,6 +134,45 @@ class TTSService {
   }
 
   /**
+   * Speak using ElevenLabs TTS (Multilingual - supports Finnish)
+   * Using "Charlotte" voice (multilingual v2 model)
+   */
+  async speakElevenLabs(text, language = 'fi') {
+    if (!this.elevenlabsKey) {
+      throw new Error('ElevenLabs API key not set.');
+    }
+
+    // Charlotte - excellent multilingual voice
+    const voiceId = 'XB0fDUnXU5powFXDhCwa';
+
+    const response = await fetch(`${ELEVENLABS_TTS_URL}/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': this.elevenlabsKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.75,
+          style: 0.0,
+          use_speaker_boost: true
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.detail?.message || err.message || `ElevenLabs TTS error: ${response.status}`);
+    }
+
+    const audioBlob = await response.blob();
+    return this.playAudio(audioBlob);
+  }
+
+  /**
    * Play audio from a blob
    */
   playAudio(audioBlob) {
@@ -151,9 +202,9 @@ class TTSService {
     }
   }
 
-  isConfigured(language = 'en-US') {
+  isConfigured(language = 'en-US', provider = 'google') {
     if (language === 'fi') {
-      return !!this.googleKey;
+      return provider === 'elevenlabs' ? !!this.elevenlabsKey : !!this.googleKey;
     }
     return !!this.deepgramKey;
   }
@@ -161,7 +212,8 @@ class TTSService {
 
 const ttsService = new TTSService(
   import.meta.env.VITE_DEEPGRAM_API_KEY,
-  import.meta.env.VITE_GOOGLE_TTS_KEY
+  import.meta.env.VITE_GOOGLE_TTS_KEY,
+  import.meta.env.VITE_ELEVENLABS_API_KEY
 );
 
 export default ttsService;

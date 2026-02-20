@@ -8,6 +8,7 @@ import './App.css'
 function App() {
   const [language, setLanguage] = useState('en-US');
   const [voiceQuality, setVoiceQuality] = useState('wavenet'); // 'wavenet' or 'standard'
+  const [ttsProvider, setTtsProvider] = useState('elevenlabs'); // 'google' or 'elevenlabs'
   const [chatHistory, setChatHistory] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
 
@@ -46,13 +47,25 @@ function App() {
         </button>
 
         {language === 'fi' && (
-          <button
-            className="voice-quality-toggle"
-            onClick={() => setVoiceQuality(voiceQuality === 'wavenet' ? 'standard' : 'wavenet')}
-            title={voiceQuality === 'wavenet' ? 'Using WaveNet (Best Quality)' : 'Using Standard (Basic Quality)'}
-          >
-            {voiceQuality === 'wavenet' ? '⭐ WaveNet' : '✓ Standard'}
-          </button>
+          <>
+            <button
+              className="voice-quality-toggle"
+              onClick={() => setTtsProvider(ttsProvider === 'google' ? 'elevenlabs' : 'google')}
+              title={ttsProvider === 'elevenlabs' ? 'Using ElevenLabs (Premium)' : 'Using Google TTS'}
+            >
+              {ttsProvider === 'elevenlabs' ? '🎙️ ElevenLabs' : '🔊 Google TTS'}
+            </button>
+
+            {ttsProvider === 'google' && (
+              <button
+                className="voice-quality-toggle"
+                onClick={() => setVoiceQuality(voiceQuality === 'wavenet' ? 'standard' : 'wavenet')}
+                title={voiceQuality === 'wavenet' ? 'Using WaveNet (Best Quality)' : 'Using Standard (Basic Quality)'}
+              >
+                {voiceQuality === 'wavenet' ? '⭐ WaveNet' : '✓ Standard'}
+              </button>
+            )}
+          </>
         )}
       </div>
 
@@ -67,7 +80,7 @@ function App() {
       />
 
       <div className="chat-section">
-        <ChatDisplay messages={chatHistory} isThinking={isThinking} language={language} voiceQuality={voiceQuality} />
+        <ChatDisplay messages={chatHistory} isThinking={isThinking} language={language} voiceQuality={voiceQuality} ttsProvider={ttsProvider} />
       </div>
     </div>
   )

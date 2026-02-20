@@ -8,8 +8,9 @@ import './ChatDisplay.css';
  * @param {boolean} isThinking - Whether the LLM is currently generating a response
  * @param {string} language - Current language setting ('en-US' or 'fi')
  * @param {string} voiceQuality - Voice quality for Finnish TTS ('wavenet' or 'standard')
+ * @param {string} ttsProvider - TTS provider ('google' or 'elevenlabs')
  */
-const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US', voiceQuality = 'wavenet' }) => {
+const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US', voiceQuality = 'wavenet', ttsProvider = 'elevenlabs' }) => {
   const bottomRef = useRef(null);
   const [playingIndex, setPlayingIndex] = useState(null);
 
@@ -27,7 +28,7 @@ const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US', vo
 
     try {
       setPlayingIndex(index);
-      await ttsService.speak(text, language, voiceQuality);
+      await ttsService.speak(text, language, voiceQuality, ttsProvider);
       setPlayingIndex(null);
     } catch (err) {
       console.error('TTS error:', err);
