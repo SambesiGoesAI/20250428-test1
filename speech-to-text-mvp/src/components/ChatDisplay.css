@@ -1,0 +1,119 @@
+.chat-display {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.chat-empty svg {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.chat-empty p {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.chat-empty span {
+  font-size: 0.875rem;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-bubble.assistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.bubble-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.3rem;
+  color: #9ca3af;
+}
+
+.bubble-content {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.chat-bubble.user .bubble-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble.assistant .bubble-content {
+  background: #f3f4f6;
+  color: #1f2937;
+  border-bottom-left-radius: 4px;
+}
+
+/* Thinking animation */
+.chat-bubble.thinking .bubble-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.9rem 1rem;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: #9ca3af;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40%           { transform: translateY(-6px); }
+}
+
+/* Scrollbar */
+.chat-display::-webkit-scrollbar { width: 8px; }
+.chat-display::-webkit-scrollbar-track { background: #f1f3f5; border-radius: 4px; }
+.chat-display::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+.chat-display::-webkit-scrollbar-thumb:hover { background: #a0aec0; }

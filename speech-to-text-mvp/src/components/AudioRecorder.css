@@ -2,9 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 100%;
+  padding-top: 2rem;
 }
 
 .audio-recorder-content {
@@ -53,7 +52,7 @@
 
 @media (max-width: 768px) {
   .audio-recorder {
-    padding: 1rem;
+    padding-top: 1rem;
   }
 
   .audio-recorder-content {

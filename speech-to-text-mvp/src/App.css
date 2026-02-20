@@ -2,6 +2,13 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+  box-sizing: border-box;
 }
 
 .language-toggle {
@@ -23,4 +30,16 @@
 
 .language-toggle:hover {
   background: rgba(255, 255, 255, 0.28);
+}
+
+.chat-section {
+  width: 100%;
+  max-width: 900px;
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
 }

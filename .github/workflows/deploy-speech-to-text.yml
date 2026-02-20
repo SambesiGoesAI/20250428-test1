@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify API key is set
+      - name: Verify API keys are set
         run: |
           if [ -z "$VITE_DEEPGRAM_API_KEY" ]; then
             echo "ERROR: VITE_DEEPGRAM_API_KEY secret is not set!"
@@ -49,13 +49,21 @@ jobs:
           else
             echo "VITE_DEEPGRAM_API_KEY is set (length: ${#VITE_DEEPGRAM_API_KEY})"
           fi
+          if [ -z "$VITE_GROQ_API_KEY" ]; then
+            echo "ERROR: VITE_GROQ_API_KEY secret is not set!"
+            exit 1
+          else
+            echo "VITE_GROQ_API_KEY is set (length: ${#VITE_GROQ_API_KEY})"
+          fi
         env:
           VITE_DEEPGRAM_API_KEY: ${{ secrets.VITE_DEEPGRAM_API_KEY }}
+          VITE_GROQ_API_KEY: ${{ secrets.VITE_GROQ_API_KEY }}
 
       - name: Build
         run: npm run build
         env:
           VITE_DEEPGRAM_API_KEY: ${{ secrets.VITE_DEEPGRAM_API_KEY }}
+          VITE_GROQ_API_KEY: ${{ secrets.VITE_GROQ_API_KEY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

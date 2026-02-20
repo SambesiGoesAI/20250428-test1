@@ -1,13 +1,37 @@
 import { useState } from 'react';
 import AudioRecorder from './components/AudioRecorder'
+import ChatDisplay from './components/ChatDisplay';
+import llmService from './services/llmService';
 import './App.css'
 
 
 function App() {
   const [language, setLanguage] = useState('en-US');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isThinking, setIsThinking] = useState(false);
 
-  const handleTranscriptionComplete = (result) => {
-    console.log('Transcription complete:', result);
+  const handleTranscriptionComplete = async (result) => {
+    const userText = result.transcript;
+    if (!userText) return;
+
+    // Add user message to chat immediately
+    const updatedHistory = [...chatHistory, { role: 'user', content: userText }];
+    setChatHistory(updatedHistory);
+    setIsThinking(true);
+
+    try {
+      // Send to Groq with full history for multi-turn context
+      const reply = await llmService.chat(userText, chatHistory);
+      setChatHistory([...updatedHistory, { role: 'assistant', content: reply }]);
+    } catch (err) {
+      console.error('LLM error:', err);
+      setChatHistory([...updatedHistory, {
+        role: 'assistant',
+        content: `Error: ${err.message}`
+      }]);
+    } finally {
+      setIsThinking(false);
+    }
   };
 
   return (
@@ -28,6 +52,10 @@ function App() {
           smartFormat: true
         }}
       />
+
+      <div className="chat-section">
+        <ChatDisplay messages={chatHistory} isThinking={isThinking} />
+      </div>
     </div>
   )
 }
