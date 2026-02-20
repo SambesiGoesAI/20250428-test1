@@ -11,7 +11,7 @@ A modular, production-ready React + Vite speech-to-text application with Deepgra
 - **Real-time Audio Recording**: Uses Web Audio API for high-quality audio capture
 - **Speech Transcription**: Deepgram API for English and Finnish (nova-2 model)
 - **AI Chat**: Groq-powered conversational AI (llama-3.3-70b-versatile)
-- **Text-to-Speech**: Deepgram Aura 2 speaks AI responses
+- **Text-to-Speech**: Multi-provider TTS (Deepgram Aura for English, Google Cloud TTS for Finnish)
 - **Language Toggle**: Switch between English and Finnish
 - **Modular Architecture**: Easily reusable components and services
 - **Beautiful UI**: Clean, modern interface with visual feedback

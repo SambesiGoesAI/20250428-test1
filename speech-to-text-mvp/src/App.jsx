@@ -54,7 +54,7 @@ function App() {
       />
 
       <div className="chat-section">
-        <ChatDisplay messages={chatHistory} isThinking={isThinking} />
+        <ChatDisplay messages={chatHistory} isThinking={isThinking} language={language} />
       </div>
     </div>
   )

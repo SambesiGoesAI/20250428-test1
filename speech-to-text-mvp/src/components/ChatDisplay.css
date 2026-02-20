@@ -112,6 +112,39 @@
   40%           { transform: translateY(-6px); }
 }
 
+/* Speaker Button */
+.speak-button {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.speak-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.speak-button:active {
+  transform: translateY(0);
+}
+
+.speak-button.playing {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 /* Scrollbar */
 .chat-display::-webkit-scrollbar { width: 8px; }
 .chat-display::-webkit-scrollbar-track { background: #f1f3f5; border-radius: 4px; }

@@ -1,17 +1,39 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import ttsService from '../services/ttsService';
 import './ChatDisplay.css';
 
 /**
  * Displays the LLM conversation history as a chat interface
  * @param {Array} messages - [{role: 'user'|'assistant', content: string}]
  * @param {boolean} isThinking - Whether the LLM is currently generating a response
+ * @param {string} language - Current language setting ('en-US' or 'fi')
  */
-const ChatDisplay = ({ messages = [], isThinking = false }) => {
+const ChatDisplay = ({ messages = [], isThinking = false, language = 'en-US' }) => {
   const bottomRef = useRef(null);
+  const [playingIndex, setPlayingIndex] = useState(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isThinking]);
+
+  const handleSpeak = async (text, index) => {
+    if (playingIndex === index) {
+      // Stop current playback
+      ttsService.stop();
+      setPlayingIndex(null);
+      return;
+    }
+
+    try {
+      setPlayingIndex(index);
+      await ttsService.speak(text, language);
+      setPlayingIndex(null);
+    } catch (err) {
+      console.error('TTS error:', err);
+      setPlayingIndex(null);
+      alert(`TTS Error: ${err.message}`);
+    }
+  };
 
   if (messages.length === 0 && !isThinking) {
     return (
@@ -32,6 +54,15 @@ const ChatDisplay = ({ messages = [], isThinking = false }) => {
           <div key={i} className={`chat-bubble ${msg.role}`}>
             <div className="bubble-label">{msg.role === 'user' ? 'You' : 'AI'}</div>
             <div className="bubble-content">{msg.content}</div>
+            {msg.role === 'assistant' && (
+              <button
+                className={`speak-button ${playingIndex === i ? 'playing' : ''}`}
+                onClick={() => handleSpeak(msg.content, i)}
+                title={playingIndex === i ? 'Stop' : 'Listen'}
+              >
+                {playingIndex === i ? '⏸' : '🔊'}
+              </button>
+            )}
           </div>
         ))}
 
