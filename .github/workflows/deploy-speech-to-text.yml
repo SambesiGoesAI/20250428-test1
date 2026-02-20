@@ -54,15 +54,22 @@ jobs:
           else
             echo "VITE_GROQ_API_KEY is set (length: ${#VITE_GROQ_API_KEY})"
           fi
+          if [ -z "$VITE_GOOGLE_TTS_KEY" ]; then
+            echo "WARNING: VITE_GOOGLE_TTS_KEY is not set — Finnish TTS will be disabled"
+          else
+            echo "VITE_GOOGLE_TTS_KEY is set (length: ${#VITE_GOOGLE_TTS_KEY})"
+          fi
         env:
           VITE_DEEPGRAM_API_KEY: ${{ secrets.VITE_DEEPGRAM_API_KEY }}
           VITE_GROQ_API_KEY: ${{ secrets.VITE_GROQ_API_KEY }}
+          VITE_GOOGLE_TTS_KEY: ${{ secrets.VITE_GOOGLE_TTS_KEY }}
 
       - name: Build
         run: npm run build
         env:
           VITE_DEEPGRAM_API_KEY: ${{ secrets.VITE_DEEPGRAM_API_KEY }}
           VITE_GROQ_API_KEY: ${{ secrets.VITE_GROQ_API_KEY }}
+          VITE_GOOGLE_TTS_KEY: ${{ secrets.VITE_GOOGLE_TTS_KEY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
