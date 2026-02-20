@@ -21,7 +21,7 @@ function App() {
 
     try {
       // Send to Groq with full history for multi-turn context
-      const reply = await llmService.chat(userText, chatHistory);
+      const reply = await llmService.chat(userText, chatHistory, language);
       setChatHistory([...updatedHistory, { role: 'assistant', content: reply }]);
     } catch (err) {
       console.error('LLM error:', err);

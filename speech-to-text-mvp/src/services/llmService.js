@@ -6,32 +6,46 @@
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
-const SYSTEM_PROMPT = `You are a helpful voice assistant. The user is speaking to you via microphone —
+const SYSTEM_PROMPTS = {
+  'en-US': `You are a helpful voice assistant. The user is speaking to you via microphone —
 their speech has been transcribed to text. Keep your responses concise and conversational (2-4 sentences).
-Avoid bullet points or markdown formatting since responses may be read aloud.`;
+Avoid bullet points or markdown formatting since responses may be read aloud.`,
+  'fi': `Olet avulias ääniavustaja. Käyttäjä puhuu sinulle mikrofonin kautta —
+heidän puheensa on litteroitu tekstiksi. Pidä vastauksesi ytimekkäinä ja keskustelunomaisina (2-4 lausetta).
+Vältä luettelomerkkejä tai markdown-muotoilua, koska vastaukset saatetaan lukea ääneen.
+TÄRKEÄÄ: Vastaa AINA suomeksi, vaikka käyttäjä puhuisi englanniksi.`
+};
 
 class LLMService {
   constructor(apiKey) {
     this.apiKey = apiKey;
+    this.language = 'en-US';
   }
 
   setApiKey(apiKey) {
     this.apiKey = apiKey;
   }
 
+  setLanguage(language) {
+    this.language = language;
+  }
+
   /**
    * Send a message and get a response, maintaining conversation history
    * @param {string} userMessage - The transcribed user message
    * @param {Array} history - Previous messages [{role, content}]
+   * @param {string} language - Language code ('en-US' or 'fi')
    * @returns {Promise<string>} The assistant's response text
    */
-  async chat(userMessage, history = []) {
+  async chat(userMessage, history = [], language = 'en-US') {
     if (!this.apiKey) {
       throw new Error('Groq API key not set. Add VITE_GROQ_API_KEY to your environment.');
     }
 
+    const systemPrompt = SYSTEM_PROMPTS[language] || SYSTEM_PROMPTS['en-US'];
+
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: systemPrompt },
       ...history,
       { role: 'user', content: userMessage }
     ];
