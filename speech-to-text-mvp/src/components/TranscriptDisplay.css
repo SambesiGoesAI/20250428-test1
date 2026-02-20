@@ -81,6 +81,18 @@
   transform: scale(0.97);
 }
 
+.speak-button:hover {
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.speak-button.speaking {
+  color: #10b981;
+  border-color: #10b981;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .copy-button:hover {
   color: #667eea;
   border-color: #667eea;

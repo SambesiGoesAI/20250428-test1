@@ -3,6 +3,7 @@ import MicrophoneButton from './MicrophoneButton';
 import TranscriptDisplay from './TranscriptDisplay';
 import { useAudioRecorder } from '../hooks/useAudioRecorder';
 import { useTranscription } from '../hooks/useTranscription';
+import ttsService from '../services/ttsService';
 import './AudioRecorder.css';
 
 /**
@@ -17,6 +18,7 @@ const AudioRecorder = ({
   transcriptionOptions = {}
 }) => {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const {
     isRecording,
@@ -56,6 +58,18 @@ const AudioRecorder = ({
     }
   };
 
+  const handleSpeak = async () => {
+    if (!transcript) return;
+    try {
+      setIsSpeaking(true);
+      await ttsService.speak(transcript);
+    } catch (err) {
+      console.error('TTS error:', err);
+    } finally {
+      setIsSpeaking(false);
+    }
+  };
+
   const handleCopy = () => {
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
@@ -81,6 +95,8 @@ const AudioRecorder = ({
           error={error}
           onClear={clearTranscript}
           onCopy={handleCopy}
+          onSpeak={handleSpeak}
+          isSpeaking={isSpeaking}
         />
 
         {copySuccess && (

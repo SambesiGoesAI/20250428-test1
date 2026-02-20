@@ -16,7 +16,9 @@ const TranscriptDisplay = ({
   isTranscribing = false,
   error = null,
   onClear,
-  onCopy
+  onCopy,
+  onSpeak,
+  isSpeaking = false
 }) => {
   const handleCopy = () => {
     if (transcript && onCopy) {
@@ -48,6 +50,19 @@ const TranscriptDisplay = ({
                 Confidence: {formatConfidence()}
               </span>
             )}
+            <button
+              className={`action-button speak-button${isSpeaking ? ' speaking' : ''}`}
+              onClick={onSpeak}
+              disabled={isSpeaking}
+              title={isSpeaking ? 'Speaking...' : 'Speak transcript'}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+              {isSpeaking ? 'Speaking...' : 'Speak'}
+            </button>
             <button
               className="action-button copy-button"
               onClick={handleCopy}
